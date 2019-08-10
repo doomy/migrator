@@ -7,7 +7,7 @@
     "require": {
 		"php": ">= 7.1",
 		"dibi/dibi": "*",
-        "doomy/DataProvider": ">= 1.0.2"
+        "doomy/DataProvider": ">= 1.0.1"
 	},
 	"minimum-stability": "stable"
 }
