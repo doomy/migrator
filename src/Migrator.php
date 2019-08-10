@@ -5,7 +5,7 @@ namespace Doomy\Migrator;
 use Dibi\DriverException;
 use Doomy\CustomDibi\Connection;
 use Doomy\DataProvider\DataProvider;
-use Invoictopus\Migration\Migration;
+use Doomy\Migrator\Migration;
 
 class Migrator
 {
