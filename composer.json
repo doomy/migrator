@@ -1,12 +1,13 @@
 {
     "name": "doomy/migrator",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "autoload": {
       "classmap": ["src/"]
     },
     "require": {
 		"php": ">= 7.1",
 		"dibi/dibi": "*",
+        "doomy/repository": ">=1.2.4",
         "doomy/DataProvider": ">= 1.0.1"
 	},
 	"minimum-stability": "stable"
