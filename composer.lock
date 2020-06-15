@@ -1,0 +1,232 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "c8088f9dc3fdca0f359ea1afeb7d3ae3",
+    "packages": [
+        {
+            "name": "dibi/dibi",
+            "version": "v4.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dg/dibi.git",
+                "reference": "ed2a82741993706c15dbd4f5b8dd7eb5b75f7aa2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dg/dibi/zipball/ed2a82741993706c15dbd4f5b8dd7eb5b75f7aa2",
+                "reference": "ed2a82741993706c15dbd4f5b8dd7eb5b75f7aa2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "replace": {
+                "dg/dibi": "*"
+            },
+            "require-dev": {
+                "nette/tester": "~2.0",
+                "phpstan/phpstan": "^0.12",
+                "tracy/tracy": "~2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                }
+            ],
+            "description": "Dibi is Database Abstraction Library for PHP",
+            "homepage": "https://dibiphp.com",
+            "keywords": [
+                "access",
+                "database",
+                "dbal",
+                "mssql",
+                "mysql",
+                "odbc",
+                "oracle",
+                "pdo",
+                "postgresql",
+                "sqlite",
+                "sqlsrv"
+            ],
+            "time": "2020-03-26T03:10:39+00:00"
+        },
+        {
+            "name": "doomy/customdibi",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doomy/CustomDibi.git",
+                "reference": "975e5e72eaf9ef40e7b3b2ba312f2d114a2dd088"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doomy/CustomDibi/zipball/975e5e72eaf9ef40e7b3b2ba312f2d114a2dd088",
+                "reference": "975e5e72eaf9ef40e7b3b2ba312f2d114a2dd088",
+                "shasum": ""
+            },
+            "require": {
+                "dibi/dibi": "*",
+                "php": ">= 5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-04-09T16:50:27+00:00"
+        },
+        {
+            "name": "doomy/entitycache",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doomy/EntityCache.git",
+                "reference": "05f9b31986db17c697d30d6a21833ccf5deb55b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doomy/EntityCache/zipball/05f9b31986db17c697d30d6a21833ccf5deb55b0",
+                "reference": "05f9b31986db17c697d30d6a21833ccf5deb55b0",
+                "shasum": ""
+            },
+            "require": {
+                "dibi/dibi": "*",
+                "php": ">= 5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2018-02-17T09:02:43+00:00"
+        },
+        {
+            "name": "doomy/ormtopus",
+            "version": "0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doomy/ormtopus.git",
+                "reference": "1768a6848fe4fd29a7d97510bf6c9618c2dbf8e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doomy/ormtopus/zipball/1768a6848fe4fd29a7d97510bf6c9618c2dbf8e2",
+                "reference": "1768a6848fe4fd29a7d97510bf6c9618c2dbf8e2",
+                "shasum": ""
+            },
+            "require": {
+                "dibi/dibi": "*",
+                "doomy/entitycache": ">= 1.0.0",
+                "doomy/repository": ">= 3.0.4",
+                "php": ">= 5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2020-06-14T18:50:14+00:00"
+        },
+        {
+            "name": "doomy/repository",
+            "version": "3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doomy/repository.git",
+                "reference": "3f5c3f46669118003943f2c1cec4bf9f6d33e052"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doomy/repository/zipball/3f5c3f46669118003943f2c1cec4bf9f6d33e052",
+                "reference": "3f5c3f46669118003943f2c1cec4bf9f6d33e052",
+                "shasum": ""
+            },
+            "require": {
+                "dibi/dibi": ">=3.0",
+                "doomy/customdibi": "^1.0.2",
+                "doomy/stringtools": "^1.0.1",
+                "php": ">= 7"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "simple data model framework for dataprovider service",
+            "time": "2019-11-19T18:13:44+00:00"
+        },
+        {
+            "name": "doomy/stringtools",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doomy/stringtools.git",
+                "reference": "6b9cd82e94580a0e0cc3b66429ed77d37e93099b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doomy/stringtools/zipball/6b9cd82e94580a0e0cc3b66429ed77d37e93099b",
+                "reference": "6b9cd82e94580a0e0cc3b66429ed77d37e93099b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">= 7"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Simple helper library for various string operations",
+            "time": "2019-11-19T17:59:30+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">= 7.1"
+    },
+    "platform-dev": []
+}

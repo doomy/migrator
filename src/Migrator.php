@@ -4,8 +4,7 @@ namespace Doomy\Migrator;
 
 use Dibi\DriverException;
 use Doomy\CustomDibi\Connection;
-use Doomy\DataProvider\DataProvider;
-use Doomy\Migrator\Migration;
+use Doomy\Ormtopus\DataEntityManager;
 
 class Migrator
 {
@@ -16,26 +15,26 @@ class Migrator
      */
     private $connection;
     /**
-     * @var DataProvider
+     * @var DataEntityManager
      */
-    private $dataProvider;
+    private $data;
     private $log;
     /**
      * @var array
      */
     private $config;
 
-    public function __construct(Connection $connection, DataProvider $dataProvider, array $config)
+    public function __construct(Connection $connection, DataEntityManager $data, array $config)
     {
         $this->connection = $connection;
-        $this->dataProvider = $dataProvider;
+        $this->data = $data;
         $this->config = $config;
     }
 
     public function migrate()
     {
         try {
-            $allMigrations = $this->dataProvider->findAll(Migration::class);
+            $allMigrations = $this->data->findAll(Migration::class);
         } catch (DriverException $e) {
             if($e->getCode() == self::DB_CODE_TABLE_DOES_NOT_EXIST) {
                 $this->createMigrationsTable();
@@ -63,7 +62,7 @@ class Migrator
                 $this->log .= "sql executed: $sql \n";
                 $this->query($sql);
                 try {
-                    $this->dataProvider->save(Migration::class, ['MIGRATION_ID' => $migrationId, 'MIGRATED_DATE' => new \DateTime()]);
+                    $this->data->save(Migration::class, ['MIGRATION_ID' => $migrationId, 'MIGRATED_DATE' => new \DateTime()]);
                 } catch (Exception $e) {}
                 $this->log .=  "OK. \n \n";
                 $newMigrationsApplied = true;
