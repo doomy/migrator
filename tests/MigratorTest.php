@@ -70,6 +70,7 @@ final class MigratorTest extends AbstractDbAwareTestCase
             __DIR__ . '/migrations/' . $migrationFilename,
             'CREATE TABLE t_test (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id));'
         );
+        $migratedAt = new \DateTime();
         $migrator->migrate();
         $tables = $this->connection->query('SHOW TABLES')
             ->fetchAll();
@@ -80,6 +81,6 @@ final class MigratorTest extends AbstractDbAwareTestCase
         $migration = reset($migrations);
         Assert::assertInstanceOf(Migration::class, $migration);
         Assert::assertEquals('01-testing-migration', $migration->getMigrationId());
-        // TODO: test migration date
+        Assert::assertEqualsWithDelta($migratedAt, $migration->getMigrationDate(), 1);
     }
 }
