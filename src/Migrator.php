@@ -54,7 +54,11 @@ class Migrator
             return;
         }
         try {
-            $migrationFiles = scandir($this->config['migrations_directory']);
+            $migrationDirectory = $this->config['migrations_directory'];
+            if (! is_string($migrationDirectory)) {
+                throw new \Exception('Migrations directory is not a string');
+            }
+            $migrationFiles = scandir($migrationDirectory);
         } catch (\ErrorException $e) {
             $this->log .= sprintf('Unknown error: %s', $e->getMessage());
             return;
