@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Doomy\Migrator\Tests;
 
-use Doomy\CustomDibi\Connection;
+use Dibi\Connection;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractDbAwareTestCase extends TestCase

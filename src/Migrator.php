@@ -4,39 +4,28 @@ declare(strict_types=1);
 
 namespace Doomy\Migrator;
 
+use Dibi\Connection;
 use Dibi\DriverException;
-use Doomy\CustomDibi\Connection;
 use Doomy\Ormtopus\DataEntityManager;
+use Doomy\Repository\Helper\DbHelper;
+use Doomy\Repository\TableDefinition\TableDefinitionFactory;
 
 class Migrator
 {
     public const DB_CODE_TABLE_DOES_NOT_EXIST = 1146;
 
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @var DataEntityManager
-     */
-    private $data;
-
     private string $log = '';
-
-    /**
-     * @var array<string,mixed>
-     */
-    private array $config;
 
     /**
      * @param array<string,mixed> $config
      */
-    public function __construct(Connection $connection, DataEntityManager $data, array $config)
-    {
-        $this->connection = $connection;
-        $this->data = $data;
-        $this->config = $config;
+    public function __construct(
+        private Connection $connection,
+        private DataEntityManager $data,
+        private array $config,
+        private TableDefinitionFactory $tableDefinitionFactory,
+        private DbHelper $dbHelper
+    ) {
     }
 
     public function migrate(): void
@@ -82,10 +71,8 @@ class Migrator
 
                     $this->query($sql);
                     try {
-                        $this->data->save(Migration::class, [
-                            'MIGRATION_ID' => $migrationId,
-                            'MIGRATED_DATE' => new \DateTime(),
-                        ]);
+                        $migration = new Migration($migrationId, new \DateTime());
+                        $this->data->save(Migration::class, $migration);
                     } catch (\Exception $e) {
                     }
                     $this->log .= "OK. \n \n";
@@ -131,7 +118,7 @@ class Migrator
     private function migrationIsApplied(string $migrationId, array $allMigrations): bool
     {
         foreach ($allMigrations as $migration) {
-            if ($migration->MIGRATION_ID === $migrationId) {
+            if ($migration->getMigrationId() === $migrationId) {
                 return true;
             }
         }
@@ -142,11 +129,10 @@ class Migrator
     private function createMigrationsTable(): void
     {
         $this->log .= "Migration table does not exist. Creating... \n \n";
-        $sqlCreate = 'CREATE TABLE IF NOT EXISTS t_migration (
-                  migration_id VARCHAR(255) NOT NULL,
-                  migrated_date DATETIME,
-                  PRIMARY KEY(migration_id)
-                )';
+
+        $tableDefinition = $this->tableDefinitionFactory->createTableDefinition(Migration::class);
+        $sqlCreate = $this->dbHelper->getCreateTable($tableDefinition);
+
         $this->log .= "sql executed: {$sqlCreate} \n";
         $this->query($sqlCreate);
     }

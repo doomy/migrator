@@ -10,7 +10,10 @@ use Doomy\Migrator\Migration;
 use Doomy\Migrator\Migrator;
 use Doomy\Ormtopus\DataEntityManager;
 use Doomy\Repository\EntityFactory;
+use Doomy\Repository\Helper\DbHelper;
 use Doomy\Repository\RepoFactory;
+use Doomy\Repository\TableDefinition\ColumnTypeMapper;
+use Doomy\Repository\TableDefinition\TableDefinitionFactory;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -33,12 +36,15 @@ final class MigratorMigrateCommandTest extends AbstractDbAwareTestCase
     public function testRunMigrateCommand(): void
     {
         $application = new Application();
-        $entityFactory = new EntityFactory($this->connection);
-        $repoFactory = new RepoFactory($this->connection, $entityFactory);
+        $entityFactory = new EntityFactory();
+        $columnTypeMapper = new ColumnTypeMapper();
+        $dbHelper = new DbHelper($columnTypeMapper);
+        $tableDefinitionFactory = new TableDefinitionFactory($columnTypeMapper);
+        $repoFactory = new RepoFactory($this->connection, $entityFactory, $dbHelper, $tableDefinitionFactory);
         $data = new DataEntityManager($repoFactory, new EntityCache());
         $migrator = new Migrator($this->connection, $data, [
             'migrations_directory' => __DIR__ . '/migrations',
-        ]);
+        ], $tableDefinitionFactory, $dbHelper);
         $migrationFilename = '01-testing-migration.sql';
         file_put_contents(
             __DIR__ . '/migrations/' . $migrationFilename,
@@ -55,7 +61,7 @@ final class MigratorMigrateCommandTest extends AbstractDbAwareTestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('IF NOT EXISTS t_migration', $output);
+        $this->assertStringContainsString('CREATE TABLE t_migration', $output);
         $this->assertStringContainsString('CREATE TABLE t_test', $output);
         $tables = $this->connection->query('SHOW TABLES')
             ->fetchAll();

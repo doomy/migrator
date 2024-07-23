@@ -5,14 +5,28 @@ declare(strict_types=1);
 namespace Doomy\Migrator;
 
 use Doomy\Repository\Model\Entity;
+use Doomy\Repository\TableDefinition\Attribute\Column\Identity;
+use Doomy\Repository\TableDefinition\Attribute\Column\PrimaryKey;
+use Doomy\Repository\TableDefinition\Attribute\Table;
 
+#[Table('t_migration')]
 class Migration extends Entity
 {
-    public const TABLE = 't_migration';
+    public function __construct(
+        #[PrimaryKey]
+        #[Identity]
+        private ?string $migrationId,
+        private \DateTimeInterface $migrationDate
+    ) {
+    }
 
-    public const IDENTITY_COLUMN = 'migration_id';
+    public function getMigrationId(): ?string
+    {
+        return $this->migrationId;
+    }
 
-    public ?string $MIGRATION_ID;
-
-    public \DateTimeInterface $MIGRATION_DATE;
+    public function getMigrationDate(): \DateTimeInterface
+    {
+        return $this->migrationDate;
+    }
 }
