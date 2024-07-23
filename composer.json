@@ -11,7 +11,7 @@
 		"dibi/dibi": "*",
         "doomy/repository": "^3.0",
         "doomy/ormtopus": "^1.0",
-        "symfony/console": "^6.0",
+        "symfony/console": "^7.1.2",
         "doomy/customdibi": "^1.0"
     },
 	"minimum-stability": "stable",
