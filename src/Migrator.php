@@ -73,7 +73,7 @@ class Migrator
                         'MIGRATION_ID' => $migrationId,
                         'MIGRATED_DATE' => new \DateTime(),
                     ]);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                 }
                 $this->log .= "OK. \n \n";
                 $newMigrationsApplied = true;
