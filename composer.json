@@ -17,7 +17,7 @@
     "require-dev": {
         "symplify/easy-coding-standard": "^12.3",
         "phpstan/phpstan": "^1.11",
-        "doomy/testing": "^1.0",
+        "doomy/testing": "^1.1.0",
         "phpunit/phpunit": "^11.2"
     },
     "scripts": {

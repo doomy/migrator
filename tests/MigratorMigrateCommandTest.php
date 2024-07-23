@@ -14,6 +14,7 @@ use Doomy\Repository\Helper\DbHelper;
 use Doomy\Repository\RepoFactory;
 use Doomy\Repository\TableDefinition\ColumnTypeMapper;
 use Doomy\Repository\TableDefinition\TableDefinitionFactory;
+use Doomy\Testing\AbstractDbAwareTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
