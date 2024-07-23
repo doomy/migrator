@@ -22,13 +22,16 @@ class Migrator
      */
     private $data;
 
-    private $log;
+    private string $log = '';
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
-    private $config;
+    private array $config;
 
+    /**
+     * @param array<string,mixed> $config
+     */
     public function __construct(Connection $connection, DataEntityManager $data, array $config)
     {
         $this->connection = $connection;
@@ -36,14 +39,15 @@ class Migrator
         $this->config = $config;
     }
 
-    public function migrate()
+    public function migrate(): void
     {
         try {
             $allMigrations = $this->data->findAll(Migration::class);
         } catch (DriverException $e) {
             if ($e->getCode() === self::DB_CODE_TABLE_DOES_NOT_EXIST) {
                 $this->createMigrationsTable();
-                return $this->migrate();
+                $this->migrate();
+                return;
             }
 
             $this->log .= sprintf('Unknown error: %s', $e->getMessage());
@@ -89,7 +93,7 @@ class Migrator
         return $this->log;
     }
 
-    private function getMigrationIdFromFilename($migrationFilename)
+    private function getMigrationIdFromFilename(string $migrationFilename): ?string
     {
         $parts = explode('.', $migrationFilename);
         $extension = array_pop($parts);
@@ -99,7 +103,7 @@ class Migrator
         return array_shift($parts);
     }
 
-    private function query($sql)
+    private function query(string $sql): void
     {
         $sql = str_replace("\r\n", '', $sql);
         $parts = explode(';', $sql);
@@ -111,7 +115,10 @@ class Migrator
         }
     }
 
-    private function migrationIsApplied($migrationId, $allMigrations)
+    /**
+     * @param Migration[] $allMigrations
+     */
+    private function migrationIsApplied(string $migrationId, array $allMigrations): bool
     {
         foreach ($allMigrations as $migration) {
             if ($migration->MIGRATION_ID === $migrationId) {

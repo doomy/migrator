@@ -12,7 +12,7 @@ class Migration extends Entity
 
     public const IDENTITY_COLUMN = 'migration_id';
 
-    public $MIGRATION_ID;
+    public string $MIGRATION_ID;
 
-    public $MIGRATION_DATE;
+    public \DateTimeInterface $MIGRATION_DATE;
 }

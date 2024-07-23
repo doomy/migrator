@@ -30,10 +30,8 @@ class MigratorMigrateCommand extends Command
     /**
      * Don't forget to return 0 for success or non-zero for error
      */
-    protected function execute(
-        InputInterface $input,
-        OutputInterface $output
-    ): int {
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
         $output->writeln(\sprintf('Migrating'));
 
         $this->migrator->migrate();
