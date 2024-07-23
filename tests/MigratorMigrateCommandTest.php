@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Doomy\Migrator\Tests;
 
 use Doomy\EntityCache\EntityCache;
+use Doomy\Migrator\Command\MigratorMigrateCommand;
 use Doomy\Migrator\Migration;
 use Doomy\Migrator\Migrator;
 use Doomy\Ormtopus\DataEntityManager;
 use Doomy\Repository\EntityFactory;
 use Doomy\Repository\RepoFactory;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
-final class MigratorTest extends AbstractDbAwareTestCase
+final class MigratorMigrateCommandTest extends AbstractDbAwareTestCase
 {
     protected function tearDown(): void
     {
@@ -27,28 +30,9 @@ final class MigratorTest extends AbstractDbAwareTestCase
         }
     }
 
-    public function testMigrateCreatesTable(): void
+    public function testRunMigrateCommand(): void
     {
-        $entityFactory = new EntityFactory($this->connection);
-        $repoFactory = new RepoFactory($this->connection, $entityFactory);
-        $data = new DataEntityManager($repoFactory, new EntityCache());
-        $migrator = new Migrator($this->connection, $data, [
-            'migrations_directory' => __DIR__ . '/migrations',
-        ]);
-
-        $tables = $this->connection->query('SHOW TABLES')
-            ->fetchAll();
-        Assert::assertCount(0, $tables);
-
-        $migrator->migrate();
-        $tables = $this->connection->query('SHOW TABLES')
-            ->fetchAll();
-        Assert::assertCount(1, $tables);
-        Assert::assertEquals('t_migration', $tables[0]['Tables_in_testing']);
-    }
-
-    public function testMigrateAppliesMigration(): void
-    {
+        $application = new Application();
         $entityFactory = new EntityFactory($this->connection);
         $repoFactory = new RepoFactory($this->connection, $entityFactory);
         $data = new DataEntityManager($repoFactory, new EntityCache());
@@ -60,15 +44,24 @@ final class MigratorTest extends AbstractDbAwareTestCase
             __DIR__ . '/migrations/' . $migrationFilename,
             'CREATE TABLE t_test (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id));'
         );
-        $migrator->migrate();
+
+        $application->add(new MigratorMigrateCommand($migrator));
+        $command = $application->find('migrator:migrate');
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            // prefix the key with two dashes when passing options,
+            // e.g: '--some-option' => 'option_value',
+        ]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('IF NOT EXISTS t_migration', $output);
+        $this->assertStringContainsString('CREATE TABLE t_test', $output);
         $tables = $this->connection->query('SHOW TABLES')
             ->fetchAll();
         Assert::assertCount(2, $tables);
         Assert::assertEquals('t_test', $tables[1]['Tables_in_testing']);
         $migrations = $data->findAll(Migration::class);
         Assert::assertCount(1, $migrations);
-        $migration = reset($migrations);
-        Assert::assertEquals('01-testing-migration', $migration->MIGRATION_ID);
-        // TODO: test migration date
     }
 }
