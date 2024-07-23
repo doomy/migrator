@@ -15,5 +15,8 @@
     "require-dev": {
         "symplify/easy-coding-standard": "^12.3",
         "phpstan/phpstan": "^1.11"
+    },
+    "scripts": {
+        "check": "clear && vendor/bin/ecs --fix && vendor/bin/phpstan analyse src --level 9"
     }
 }
