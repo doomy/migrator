@@ -61,26 +61,32 @@ class Migrator
         }
 
         $newMigrationsApplied = false;
-
-        foreach ($migrationFiles as $migrationFile) {
-            $migrationId = $this->getMigrationIdFromFilename($migrationFile);
-            if (! $migrationId) {
-                continue;
-            }
-            if (! $this->migrationIsApplied($migrationId, $allMigrations)) {
-                $this->log .= "applying migration {$migrationId} \n";
-                $sql = file_get_contents($this->config['migrations_directory'] . '/' . $migrationFile);
-                $this->log .= "sql executed: {$sql} \n";
-                $this->query($sql);
-                try {
-                    $this->data->save(Migration::class, [
-                        'MIGRATION_ID' => $migrationId,
-                        'MIGRATED_DATE' => new \DateTime(),
-                    ]);
-                } catch (\Exception $e) {
+        if ($migrationFiles !== false) {
+            foreach ($migrationFiles as $migrationFile) {
+                $migrationId = $this->getMigrationIdFromFilename($migrationFile);
+                if (! $migrationId) {
+                    continue;
                 }
-                $this->log .= "OK. \n \n";
-                $newMigrationsApplied = true;
+                if (! $this->migrationIsApplied($migrationId, $allMigrations)) {
+                    $this->log .= "applying migration {$migrationId} \n";
+                    $sql = file_get_contents($this->config['migrations_directory'] . '/' . $migrationFile);
+                    $this->log .= "sql executed: {$sql} \n";
+
+                    if (! is_string($sql)) {
+                        throw new \Exception('Migration file is not readable');
+                    }
+
+                    $this->query($sql);
+                    try {
+                        $this->data->save(Migration::class, [
+                            'MIGRATION_ID' => $migrationId,
+                            'MIGRATED_DATE' => new \DateTime(),
+                        ]);
+                    } catch (\Exception $e) {
+                    }
+                    $this->log .= "OK. \n \n";
+                    $newMigrationsApplied = true;
+                }
             }
         }
         if (! $newMigrationsApplied) {
