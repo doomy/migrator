@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doomy\Migrator\Command;
 
 use Doomy\Migrator\Migrator;
@@ -11,7 +13,8 @@ class MigratorMigrateCommand extends Command
 {
     private Migrator $migrator;
 
-    public function __construct(Migrator $migrator) {
+    public function __construct(Migrator $migrator)
+    {
         $this->migrator = $migrator;
         parent::__construct();
     }
@@ -27,10 +30,11 @@ class MigratorMigrateCommand extends Command
     /**
      * Don't forget to return 0 for success or non-zero for error
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
+    protected function execute(
+        InputInterface $input,
+        OutputInterface $output
+    ): int {
         $output->writeln(\sprintf('Migrating'));
-
 
         $this->migrator->migrate();
         $output->writeln($this->migrator->getOutput());
