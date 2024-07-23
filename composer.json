@@ -7,7 +7,7 @@
         }
     },
     "require": {
-		"php": ">= 7.1",
+		"php": ">= 7.4",
 		"dibi/dibi": "*",
         "doomy/repository": "^3.0",
         "doomy/ormtopus": "^1.0",
