@@ -36,9 +36,23 @@ abstract class AbstractMigratorTestCase extends AbstractDbAwareTestCase
 
     protected function tearDown(): void
     {
-        $this->connection->query('DROP TABLE t_migration');
-        $this->connection->query('DROP TABLE if exists t_test');
+        $this->dropAllTables();
+        $this->deleteAllMigrationFiles();
+    }
 
+    private function dropAllTables(): void
+    {
+        $tables = $this->connection->query('SHOW TABLES')
+            ->fetchAll();
+        foreach ($tables as $table) {
+            $tableArray = is_array($table) ? $table : $table->toArray();
+            $tableName = array_values($tableArray)[0]; // Get the table name from the first column of the result
+            $this->connection->query("DROP TABLE IF EXISTS `{$tableName}`");
+        }
+    }
+
+    private function deleteAllMigrationFiles(): void
+    {
         $migrationFiles = glob(__DIR__ . '/migrations/*');
         if (is_array($migrationFiles)) {
             foreach ($migrationFiles as $file) {

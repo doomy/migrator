@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Doomy\Migrator\Tests;
 
 use Doomy\Migrator\Migration;
+use Doomy\Repository\Tests\Support\TestEntity;
 use PHPUnit\Framework\Assert;
 
 final class MigratorTest extends AbstractMigratorTestCase
@@ -41,5 +42,15 @@ final class MigratorTest extends AbstractMigratorTestCase
         Assert::assertInstanceOf(Migration::class, $migration);
         Assert::assertEquals('01-testing-migration', $migration->getMigrationId());
         Assert::assertEqualsWithDelta($migratedAt, $migration->getMigrationDate(), 1);
+    }
+
+    public function testCreateMigrationFromEntity(): void
+    {
+        $migrationId = $this->migrator->createMigrationFromEntity(TestEntity::class);
+        Assert::assertSame('001-test_table', $migrationId);
+        $migrationFilename = $migrationId . '.sql';
+        $migrationSql = file_get_contents(__DIR__ . '/migrations/' . $migrationFilename);
+        Assert::assertIsString($migrationSql);
+        Assert::assertStringContainsString('CREATE TABLE test_table', $migrationSql);
     }
 }
