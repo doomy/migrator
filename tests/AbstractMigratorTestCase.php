@@ -23,10 +23,10 @@ abstract class AbstractMigratorTestCase extends AbstractDbAwareTestCase
     public function __construct(string $name)
     {
         parent::__construct($name);
-        $entityFactory = new EntityFactory();
         $columnTypeMapper = new ColumnTypeMapper();
         $dbHelper = new DbHelper($columnTypeMapper);
         $tableDefinitionFactory = new TableDefinitionFactory($columnTypeMapper);
+        $entityFactory = new EntityFactory($tableDefinitionFactory);
         $repoFactory = new RepoFactory($this->connection, $entityFactory, $dbHelper, $tableDefinitionFactory);
         $this->data = new DataEntityManager($repoFactory, new EntityCache());
         $this->migrator = new Migrator($this->connection, $this->data, [

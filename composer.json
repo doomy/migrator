@@ -9,9 +9,9 @@
     "require": {
 		"php": ">= 8.0",
 		"dibi/dibi": "*",
-        "doomy/ormtopus": "^4.0.0",
+        "doomy/ormtopus": "^5.0.0",
         "symfony/console": "^7.1.2",
-        "doomy/repository": "^6.0.1"
+        "doomy/repository": "^7.0.0"
     },
 	"minimum-stability": "stable",
     "require-dev": {
