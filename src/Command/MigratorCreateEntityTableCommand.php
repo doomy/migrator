@@ -28,16 +28,16 @@ class MigratorCreateEntityTableCommand extends Command
         $this->addArgument('entityClass', InputArgument::REQUIRED, 'Entity class to create table for');
     }
 
-    /**
-     * Don't forget to return 0 for success or non-zero for error
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln(\sprintf('Migrating'));
-        // choose command name
-
+        $output->writeln(
+            'When running into problems with loading the class, keep in mind, that currently the command needs to be run like this:'
+        );
+        $output->writeln("bin/console migrator:create-entity-table App\\\\Model\\\\Entity\n\n");
         $entityClass = $input->getArgument('entityClass');
         assert(\is_string($entityClass), 'Entity class must be a string');
+        assert(class_exists($entityClass), "Entity class {$entityClass} does not exist");
         assert(is_subclass_of($entityClass, Entity::class), 'Entity class must be a subclass of ' . Entity::class);
         $this->migrator->createMigrationFromEntity($entityClass);
         $this->migrator->migrate();
